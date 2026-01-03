@@ -53,6 +53,10 @@ export default function Page() {
   load();
 }
 
+async function deleteHabit(habitId: string) {
+  await supabase.from("habits").delete().eq("id", habitId);
+  load();
+}
 
   return (
     <main className="max-w-3xl mx-auto p-6 space-y-6">
@@ -61,7 +65,7 @@ export default function Page() {
 
       <div className="space-y-6">
         {habits.map(h => (
-          <HabitCard key={h.id} habit={h} onToggle={toggleDay} />
+          <HabitCard key={h.id} habit={h} onToggle={toggleDay} onDelete={deleteHabit} />
         ))}
       </div>
     </main>
