@@ -13,7 +13,7 @@ export default function HabitCard({
 }) {
   return (
     <div className="relative border rounded-xl p-4 space-y-3">
-    
+      {/* Delete Button */}
       <button
         onClick={() => {
           if (confirm(`Delete "${habit.name}"?`)) {

@@ -22,9 +22,10 @@ export default function HabitHeatmap({
   logs: Log[];
   onToggle: (habitId: string, date: string, done: boolean) => void;
 }) {
-  const today = new Date();
-  const completed = new Set(logs.map(l => l.date));
+  const today = startOfDay(new Date());
+  const todayStr = formatISO(today, { representation: "date" });
 
+  const completed = new Set(logs.map(l => l.date));
 
   const values = eachDayOfInterval({
     start: startOfYear(today),
@@ -34,7 +35,8 @@ export default function HabitHeatmap({
     return {
       date: d,
       count: completed.has(d) ? 1 : 0,
-     future: isAfter(date, startOfDay(today)),
+      isFuture: isAfter(date, today), // only disable strictly future
+      isToday: d === todayStr,
     };
   });
 
@@ -45,11 +47,15 @@ export default function HabitHeatmap({
       values={values}
       classForValue={value => {
         if (!value) return "color-empty";
-        if (value.future) return "color-future";
-        return value.count === 1 ? "color-filled" : "color-empty";
+        if (value.isFuture) return "color-future";
+
+        let cls = value.count === 1 ? "color-filled" : "color-empty";
+        if (value.isToday) cls += " color-today";
+
+        return cls;
       }}
       onClick={value => {
-        if (!value || value.future) return;
+        if (!value || value.isFuture) return;
         onToggle(habitId, value.date, value.count === 1);
       }}
     />
