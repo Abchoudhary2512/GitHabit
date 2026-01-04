@@ -12,7 +12,7 @@ export default function HabitCard({
   onDelete: (habitId: string) => void;
 }) {
   return (
-    <div className="relative border rounded-xl p-4 space-y-3">
+    <div className="relative border border-gray-700 rounded-xl p-4 space-y-3 bg-gray-900 text-white">
       {/* Delete Button */}
       <button
         onClick={() => {
